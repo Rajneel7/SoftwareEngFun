@@ -38,6 +38,10 @@ public class manager {
 
 				updateItem(array);
 				break;
+					
+			case 5:
+				System.out.println("Bye");
+				System.exit(0); 
 
 			}
 		}
