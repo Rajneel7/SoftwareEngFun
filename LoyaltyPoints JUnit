@@ -1,0 +1,36 @@
+public class LoyaltyPoints {
+
+
+		private double Points;
+		private String FirstName;
+		private String LastName;
+		private double Total;
+		
+		
+		public LoyaltyPoints(double Total, double Points)
+		{
+			this.Total = Total;
+			this.Points = 0;
+		}
+		
+		public double Loyalty()
+		{
+		
+	     if (Total >= 100)
+	     {
+	    	return Points = 10; 
+	     }
+	     else
+	     {
+	    	 return Points;
+	     }
+	    }
+		
+		
+		public double getLoyalty()
+		{
+			return Points;
+		}
+	
+
+}
