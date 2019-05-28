@@ -209,14 +209,14 @@ public class mainmenu{
 
 		private static void customerInput()
 		{
+			
 			Scanner sc = new Scanner(System.in);
 			char custAnswer;
-			char finalAns;	
 			do {
-			System.out.println("What would you like to do? \nSelect Product: s		Check Price: p		Check Discounts for an item: d"); //Change the question??
+			System.out.println("What would you like to do? \nSelect Product: s		Check Price: p		Check Discounts for an item: d		Exit the program: e"); //Change the question??
 			custAnswer = sc.next().charAt(0);
 			}
-			while ((custAnswer != 's') && (custAnswer != 'p') && (custAnswer != 'd'));
+			while ((custAnswer != 's') && (custAnswer != 'p') && (custAnswer != 'd') && (custAnswer != 'e'));
 			
 			switch(custAnswer)
 			{
@@ -231,11 +231,14 @@ public class mainmenu{
 			case 'd':
 			d();
 			break;
-					
-			default:
-				System.out.println("Error - please enter a valid option.")	
+			
+			case 'e':
+			System.exit(0);
 			break;
 					
+			default:
+			System.out.println("Error - please enter a valid option.");	
+			break;
 			}
 			
 		}
@@ -282,11 +285,11 @@ public class mainmenu{
 							//Show all the details about the product eggs, E.g price, supplier, discount when bought in bulk
 						}
 						System.out.println("Select another product: s");
-						System.out.println("Exit the program: e");
+						System.out.println("Exit to the menu: e");
 						finalAnswer = sc.next().charAt(0);
 						if(finalAnswer == 'e')
 						{
-							System.exit(0);
+							customerInput();
 						}
 						if (finalAnswer == 's') continue;
 			}
@@ -313,11 +316,11 @@ public class mainmenu{
 						}
 						
 						System.out.println("Enter another productID: p");
-						System.out.println("Exit the program: e");
+						System.out.println("Exit to the menu: e");
 						finalAnswer = sc.next().charAt(0);
 						if(finalAnswer == 'e')
 						{
-							System.exit(0);
+							customerInput();
 						}
 						if (finalAnswer == 'p') continue;
 			}
@@ -344,17 +347,18 @@ public class mainmenu{
 						}
 						
 						System.out.println("Enter another productID: p");
-						System.out.println("Exit the program: e");
+						System.out.println("Exit to the menu: e");
 						finalAnswer = sc.next().charAt(0);
 						if(finalAnswer == 'e')
 						{
-							System.exit(0);
+							customerInput();
 						}
 						if (finalAnswer == 'p') continue;
 			}
 			}
-
-}
+	
+		
+	}
 
 
 			
