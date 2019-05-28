@@ -1,212 +1,194 @@
 package sefA1;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class manager {
 
-	public static void main(String[] args) {
-		System.out.println();
-		System.out.println("============Welcome to our store============");
-		System.out.println("1: Stock list   2: Add item   3: Delete item   4: Change item  5: Quit");
-		System.out.println("Select which function you want to use");
-
-		ArrayList<Product> array = new ArrayList<Product>();
-
-		init(array);
-		while (true) {
-
-			mainMenu();
-
-			int choose = chooseFunction();
-			switch (choose) {
-			case 1:
-
-				showItemList(array);
-				break;
-
-			case 2:
-
-				addItem(array);
-				break;
-
-			case 3:
-				deleteItem(array);
-				break;
-
-			case 4:
-
-				updateItem(array);
-				break;
-					
-			case 5:
-				System.out.println("Bye");
-				System.exit(0); 
-
+	public void manager() throws IOException {
+		if (load()) {
+			Scanner sc = new Scanner(System.in);
+			while (true) {
+				ArrayList<Product> list = new ArrayList<Product>();
+				check(list);
+				System.out.println(
+						"Select function: (1.View stock list  2.Add item 3.Change item 4.Delete item  5.Quit)");
+				int choice = sc.nextInt();
+				switch (choice) {
+				case 1:
+					// View stock
+					print(list);
+					break;
+				case 2:
+					// Add item
+					addProduct(list);
+					break;
+				case 3:
+					// Change item
+					reverse(list);
+					break;
+				case 4:
+					// Delete item
+					remove(list);
+					break;
+				case 5:
+					// Quit
+					return;
+				default:
+					System.out.println("Wrong function");
+					break;
+				}
 			}
+
+		} else {
+			return;
 		}
 	}
 
-	public static void init(ArrayList<Product> array) {
-
-		Product p1 = new Product();
-		p1.ID = 0001;
-		p1.name = "Bread";
-		p1.price = 5;
-
-		Product p2 = new Product();
-		p2.ID = 0002;
-		p2.name = "Milk";
-		p2.price = 3;
-
-		Product p3 = new Product();
-		p3.ID = 0003;
-		p3.name = "Eggs";
-		p3.price = 5;
-
-		Product p4 = new Product();
-		p4.ID = 0004;
-		p4.name = "Cake";
-		p4.price = 10;
-
-		Product p5 = new Product();
-		p5.ID = 0005;
-		p5.name = "Shampoo";
-		p5.price = 7;
-
-		array.add(p1);
-		array.add(p2);
-		array.add(p3);
-		array.add(p4);
-		array.add(p5);
-	}
-
-	private static void updateItem(ArrayList<Product> array) {
-
-		System.out.println("Change item function selected");
-		System.out.println("Enter item ID");
-
+	public void remove(ArrayList<Product> list) throws IOException {
 		Scanner sc = new Scanner(System.in);
-		int ID = sc.nextInt();
-
-		for (int i = 0; i < array.size(); i++) {
-			Product item = array.get(i);
-
-			if (item.ID == ID) {
-				System.out.println("Enter new item ID");
-				item.ID = sc.nextInt();
-
-				System.out.println("Enter item name");
-				item.name = sc.next();
-
-				System.out.println("Enter item price");
-				item.price = sc.nextDouble();
-				System.out.println("Item has been changed");
-
-				System.out.println();
-				System.out.println("============Welcome to our store============");
-				System.out.println("1: Stock list   2: Add item   3: Delete item   4: Change item  5: Quit");
-				System.out.println("Select which function you want to use");
+		print(list);
+		System.out.println("Enter Item ID ");
+		String id = sc.nextLine();
+		for (int i = 0; i < list.size(); i++) {
+			Product f = list.get(i);
+			if (f.getId().equals(id)) {
+				list.remove(i);
+				write(list);
+				System.out.println("Deleted");
 				return;
 			}
 		}
-		System.out.println("Item ID does not exist");
-		System.out.println();
-		System.out.println("============Welcome to our store============");
-		System.out.println("1: Stock list   2: Add item   3: Delete item   4: Change item  5: Quit");
-		System.out.println("Select which function you want to use");
+		System.out.println("Cannot find ID");
 	}
 
-	private static void deleteItem(ArrayList<Product> array) {
+	// Change item
+	public void reverse(ArrayList<Product> list) throws IOException {
+		Scanner sc1 = new Scanner(System.in);
+		Scanner sc2 = new Scanner(System.in);
+		print(list);
+		System.out.println("Enter ID: ");
+		String id = sc1.nextLine();
+		for (int i = 0; i < list.size(); i++) {
+			Product f = list.get(i);
+			if (f.getId().equals(id)) {
+				System.out.println("Enter name: ");
+				String name = sc1.nextLine();
+				System.out.println("Enter price: ");
+				int price = sc2.nextInt();
 
-		System.out.println("Selected deleting item function");
-		System.out.println("Enter item ID");
-		Scanner sc = new Scanner(System.in);
+				f.setName(name);
+				f.setPrice(price);
 
-		int ID = sc.nextInt();
-
-		for (int i = 0; i < array.size(); i++) {
-
-			Product item = array.get(i);
-
-			if (item.ID == ID) {
-
-				array.remove(i);
-				System.out.println("Item has been deleted");
-				System.out.println();
-				System.out.println("============Welcome to our store============");
-				System.out.println("1: Stock list   2: Add item   3: Delete item   4: Change item  5: Quit");
-				System.out.println("Select which function you want to use");
+				write(list);
+				System.out.println("Sucuessful");
 				return;
 			}
 		}
-		System.out.println("Can not find item ID");
-		System.out.println();
-		System.out.println("============Welcome to our store============");
-		System.out.println("1: Stock list   2: Add item   3: Delete item   4: Change item  5: Quit");
-		System.out.println("Select which function you want to use");
+		System.out.println("Cannot find ID!");
 
 	}
 
-	private static void addItem(ArrayList<Product> array) {
+	// Add item
+	public void addProduct(ArrayList<Product> list) throws IOException {
+		Scanner sc1 = new Scanner(System.in);
+		Scanner sc2 = new Scanner(System.in);
+		print(list);
+		System.out.println("Enter ID ");
+		String id = sc1.nextLine();
+		for (int i = 0; i < list.size(); i++) {
+			Product f = list.get(i);
+			if (f.getId().equals(id)) {
+				System.out.println("Already exist");
+				return;
+			}
+		}
+		System.out.println("Enter name ");
+		String name = sc1.nextLine();
+		System.out.println("Enter price ");
+		int price = sc2.nextInt();
 
-		System.out.println("Selected adding function");
+		Product f = new Product(id, name, price, name);
+		list.add(f);
 
+		write(list);
+		System.out.println("Successful");
+
+	}
+
+	// Adding item into the txt
+	private void write(ArrayList<Product> list) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/shuhaoshi/Desktop/Product.txt"));
+		for (int i = 0; i < list.size(); i++) {
+			Product f = list.get(i);
+			bw.write(f.getId() + " " + f.getName() + " " + f.getPrice() + " " + f.getUnit());
+			bw.newLine();
+		}
+		bw.close();
+	}
+
+	public void print(ArrayList<Product> list) {
+		System.out.println("ID\tName\tPrice");
+		for (int i = 0; i < list.size(); i++) {
+			Product f = list.get(i);
+			System.out.println(f.getId() + "\t" + f.getName() + "\t" + f.getPrice() + "\t" + f.getUnit());
+		}
+	}
+
+	// Check stock
+	public void check(ArrayList<Product> list) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader("/Users/shuhaoshi/Desktop/Product.txt"));
+		String line;
+		while ((line = br.readLine()) != null) {
+			String[] str = line.split(" ");
+			Product f = new Product(str[0], str[1], Integer.parseInt(str[2]), "");
+			list.add(f);
+		}
+		br.close();
+	}
+
+	// Login
+	public boolean load() throws FileNotFoundException, IOException {
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Enter item ID");
 
-		int ID = sc.nextInt();
+		System.out.println("Username: ");
+		String username = sc.nextLine();
+		System.out.println("Password: ");
+		String password = sc.nextLine();
 
-		System.out.println("Enter item name");
-		String name = sc.next();
+		BufferedReader br = new BufferedReader(new FileReader("/Users/shuhaoshi/Desktop/admin.txt"));
+		String line = br.readLine();
 
-		System.out.println("Enter item price");
-		double price = sc.nextDouble();
+		String[] str = line.split(",");
 
-		Product item = new Product();
+		if (str[0].equals(username) && str[1].equals(password)) {
+			System.out.println("Welcome to our store " + username);
 
-		item.ID = ID;
-		item.name = name;
-		item.price = price;
-		array.add(item);
-		System.out.println("Item has been added");
-
-		System.out.println();
-		System.out.println("============Welcome to our store============");
-		System.out.println("1: Stock list   2: Add item   3: Delete item   4: Change item  5: Quit");
-		System.out.println("Select which function you want to use");
-
-	}
-
-	private static void showItemList(ArrayList<Product> array) {
-		System.out.println();
-		System.out.println("================Item Stock================");
-		System.out.println("Item ID         Item name                Item price");
-
-		for (int i = 0; i < array.size(); i++) {
-
-			Product item = array.get(i);
-
-			System.out.println(item.ID + "               " + item.name + "                       " + item.price);
+			return true;
+		} else {
+			System.out.println("Username or password incorrect, Cannot login");
+			return false;
 
 		}
-		System.out.println();
-		System.out.println("============Welcome to our store============");
-		System.out.println("1: Stock list   2: Add item   3: Delete item   4: Change item  5: Quit");
-		System.out.println("Select which function you want to use");
-
 	}
 
-	private static int chooseFunction() {
+	public String getUsername() {
 		Scanner sc = new Scanner(System.in);
-		return sc.nextInt();
+		String username = sc.nextLine();
+		return username;
 	}
 
-	private static void mainMenu() {
-
+	public String getPassword() {
+		System.out.println("f");
+		Scanner sc = new Scanner(System.in);
+		String password = sc.nextLine();
+		return password;
 	}
 
-	private static void checkPrice() {
-
-	}
 }
