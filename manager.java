@@ -157,10 +157,11 @@ public class manager {
 	public boolean load() throws FileNotFoundException, IOException {
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("Username: ");
-		String username = sc.nextLine();
-		System.out.println("Password: ");
-		String password = sc.nextLine();
+		enterUsername();
+		getUsername();
+		
+		enterPassword();
+		getPassword();
 
 		BufferedReader br = new BufferedReader(new FileReader("/Users/shuhaoshi/Desktop/admin.txt"));
 		String line = br.readLine();
@@ -178,10 +179,19 @@ public class manager {
 		}
 	}
 
+	public void enterUsername() {
+		String enterUsername = "Enter Username: ";
+		System.out.println(enterUsername);
+	}
+	
 	public String getUsername() {
 		Scanner sc = new Scanner(System.in);
 		String username = sc.nextLine();
 		return username;
+	}
+	public void enterPassword() {
+		String enterPassword = "Enter Password: ";
+		System.out.println(enterPassword);
 	}
 
 	public String getPassword() {
